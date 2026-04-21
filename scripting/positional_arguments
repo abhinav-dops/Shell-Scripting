@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+
+# ─── Usage Guide ───────────────────────────────────────────
+usage() {
+    echo "Usage: $0 <ami-id> <instance-type>"
+    echo ""
+    echo "  ami-id         The AMI ID to launch (e.g. ami-0abcd1234)"
+    echo "  instance-type  EC2 instance type  (e.g. t2.micro)"
+    echo ""
+    echo "Example:"
+    echo "  $0 ami-0abcd1234 t2.micro"
+    exit 1
+}
+
+if [[ $# -lt 2 ]]; then
+    echo "❌ Error: Missing required arguments."
+    usage
+fi
+
+AMI_ID=$1
+INSTANCE_TYPE=$2
+
+if [[ -z "$AMI_ID" ]]; then
+    echo "❌ Error: AMI ID cannot be empty."
+    usage
+fi
+
+if [[ ! "$AMI_ID" =~ ^ami-[a-zA-Z0-9]+$ ]]; then
+    echo "❌ Error: '$AMI_ID' doesn't look like a valid AMI ID."
+    usage
+fi
+
+echo "   Arguments valid. Proceeding..."
+echo "   AMI ID        : $AMI_ID"
+echo "   Instance Type : $INSTANCE_TYPE"
